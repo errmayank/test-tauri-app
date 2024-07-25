@@ -4,6 +4,13 @@ on:
     push:
         branches:
             - main
+    workflow_dispatch:
+        inputs:
+            force_run:
+                type: boolean
+                description: "Forced run"
+                default: false
+                required: false
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -82,7 +89,7 @@ jobs:
     upload_assets:
         name: "Upload assets"
         needs: [version_or_publish]
-        if: ${{ needs.version_or_publish.outputs.is_published == 'true' }}
+        if: ${{ needs.version_or_publish.outputs.is_published == 'true'|| github.event.inputs.force_run == 'true'  }}
         permissions:
             contents: "write"
         strategy:
