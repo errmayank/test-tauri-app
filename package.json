@@ -1,36 +1,43 @@
 {
-  "name": "test-tauri-app",
-  "version": "0.0.2",
-  "description": "",
-  "type": "module",
-  "scripts": {
-    "dev": "vite dev",
-    "build": "vite build",
-    "preview": "vite preview",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "tauri": "tauri",
-    "changeset-add": "changeset add",
-    "changeset-status": "changeset status --verbose",
-    "changeset-version": "changeset version",
-    "changeset-tag": "changeset tag"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "@tauri-apps/api": ">=2.0.0-beta.0",
-    "@tauri-apps/plugin-shell": ">=2.0.0-beta.0"
-  },
-  "devDependencies": {
-    "@changesets/changelog-github": "^0.5.0",
-    "@changesets/cli": "^2.27.7",
-    "@sveltejs/adapter-static": "^3.0.1",
-    "@sveltejs/kit": "^2.0.0",
-    "@sveltejs/vite-plugin-svelte": "^3.0.0",
-    "@tauri-apps/cli": ">=2.0.0-beta.0",
-    "svelte": "^4.2.7",
-    "svelte-check": "^3.6.0",
-    "tslib": "^2.4.1",
-    "typescript": "^5.0.0",
-    "vite": "^5.0.3"
-  }
+    "name": "test-tauri-app",
+    "version": "0.0.2",
+    "description": "",
+    "type": "module",
+    "scripts": {
+        "dev": "vite dev",
+        "build": "vite build",
+        "preview": "vite preview",
+        "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+        "format": "prettier --write \"**/*.{svelte,js,cjs,mjs,ts,cts,mts,json,md,yaml,yml}\"",
+        "format-check": "prettier --check \"**/*.{svelte,js,cjs,mjs,ts,cts,mts,json,md,yaml,yml}\"",
+        "sync-pnpm-lock": "pnpm install --lockfile-only",
+        "sync-cargo-lock": "cd ./src-tauri && cargo update",
+        "sync-metadata": "cd ./scripts/sync-metadata && cargo run && pnpm run sync-pnpm-lock && pnpm run sync-cargo-lock",
+        "changeset-add": "changeset add",
+        "changeset-status": "changeset status --verbose",
+        "changeset-version": "changeset version && pnpm run sync-metadata && pnpm run format",
+        "changeset-tag": "changeset tag",
+        "tauri": "tauri"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "@tauri-apps/api": ">=2.0.0-beta.0",
+        "@tauri-apps/plugin-shell": ">=2.0.0-beta.0"
+    },
+    "devDependencies": {
+        "@changesets/changelog-github": "^0.5.0",
+        "@changesets/cli": "^2.27.7",
+        "@sveltejs/adapter-static": "^3.0.1",
+        "@sveltejs/kit": "^2.0.0",
+        "@sveltejs/vite-plugin-svelte": "^3.0.0",
+        "@tauri-apps/cli": ">=2.0.0-beta.0",
+        "prettier": "^3.3.3",
+        "prettier-plugin-svelte": "^3.2.6",
+        "svelte": "^4.2.7",
+        "svelte-check": "^3.6.0",
+        "tslib": "^2.4.1",
+        "typescript": "^5.0.0",
+        "vite": "^5.0.3"
+    }
 }

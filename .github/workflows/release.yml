@@ -1,143 +1,148 @@
 name: "Release"
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
-  CI: "true"
-  NODE_VERSION: 20.16.0
-  PNPM_VERSION: 9.6.0
+    CI: "true"
+    NODE_VERSION: 20.16.0
+    PNPM_VERSION: 9.6.0
 
 jobs:
-  version_or_publish:
-    name: "Version or Publish"
-    if: github.repository == 'errmayank/test-tauri-app'
-    permissions:
-      contents: "write"
-      pull-requests: "write"
-    runs-on: ubuntu-latest
-    outputs:
-      IS_PUBLISHED: ${{ steps.changesets.outputs.published }}
-    steps:
-      - name: "Checkout repository"
-        uses: actions/checkout@v4
+    version_or_publish:
+        name: "Version or Publish"
+        if: github.repository == 'errmayank/test-tauri-app'
+        permissions:
+            contents: "write"
+            pull-requests: "write"
+        runs-on: ubuntu-latest
+        outputs:
+            IS_PUBLISHED: ${{ steps.changesets.outputs.published }}
+        steps:
+            - name: "Checkout repository"
+              uses: actions/checkout@v4
 
-      - name: "Setup pnpm"
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+            - name: "Setup pnpm"
+              uses: pnpm/action-setup@v4
+              with:
+                  version: ${{ env.PNPM_VERSION }}
 
-      - name: "Setup Node.js"
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
+            - name: "Setup Node.js"
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: pnpm
 
-      - name: "Get pnpm store directory"
-        id: pnpm_cache
-        shell: bash
-        run: echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+            - name: "Get pnpm store directory"
+              id: pnpm_cache
+              shell: bash
+              run: echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-      - name: "Setup pnpm cache"
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.pnpm_cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-pnpm-store-
+            - name: "Setup pnpm cache"
+              uses: actions/cache@v4
+              with:
+                  path: ${{ steps.pnpm_cache.outputs.pnpm_cache_dir }}
+                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: ${{ runner.os }}-pnpm-store-
 
-      - name: "Setup Rust"
-        uses: dtolnay/rust-toolchain@stable
+            - name: "Setup Rust"
+              uses: dtolnay/rust-toolchain@stable
 
-      - name: "Install frontend dependencies"
-        run: pnpm install
+            - name: "Setup Rust cache"
+              uses: swatinem/rust-cache@v2
+              with:
+                  workspaces: "./scripts/sync-metadata -> target"
 
-      - name: "Create a release pull request"
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          commit: "chore(release): version bump"
-          title: "chore(release): version bump"
-          version: pnpm changeset-version
-          publish: pnpm changeset-tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: "Install frontend dependencies"
+              run: pnpm install
 
-  upload_assets:
-    name: "Upload assets"
-    needs: [version_or_publish]
-    if: ${{ needs.version_or_publish.outputs.IS_PUBLISHED == 'true' }}
-    permissions:
-      contents: "write"
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: "macos-latest"
-            args: "--target aarch64-apple-darwin"
-          - platform: "macos-latest"
-            args: "--target x86_64-apple-darwin"
-          - platform: "ubuntu-latest"
-            args: ""
-          - platform: "windows-latest"
-            args: ""
-    runs-on: ${{ matrix.platform }}
-    steps:
-      - name: "Checkout repository"
-        uses: actions/checkout@v4
+            - name: "Create a release pull request"
+              id: changesets
+              uses: changesets/action@v1
+              with:
+                  commit: "chore(release): version bump"
+                  title: "chore(release): version bump"
+                  version: pnpm changeset-version
+                  publish: pnpm changeset-tag
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Setup pnpm"
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+    upload_assets:
+        name: "Upload assets"
+        needs: [version_or_publish]
+        if: ${{ needs.version_or_publish.outputs.IS_PUBLISHED == 'true' }}
+        permissions:
+            contents: "write"
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - platform: "macos-latest"
+                      args: "--target aarch64-apple-darwin"
+                    - platform: "macos-latest"
+                      args: "--target x86_64-apple-darwin"
+                    - platform: "ubuntu-latest"
+                      args: ""
+                    - platform: "windows-latest"
+                      args: ""
+        runs-on: ${{ matrix.platform }}
+        steps:
+            - name: "Checkout repository"
+              uses: actions/checkout@v4
 
-      - name: "Setup Node.js"
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
+            - name: "Setup pnpm"
+              uses: pnpm/action-setup@v4
+              with:
+                  version: ${{ env.PNPM_VERSION }}
 
-      - name: "Get pnpm store directory"
-        id: pnpm_cache
-        shell: bash
-        run: echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+            - name: "Setup Node.js"
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: pnpm
 
-      - name: "Setup pnpm cache"
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.pnpm_cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-pnpm-store-
+            - name: "Get pnpm store directory"
+              id: pnpm_cache
+              shell: bash
+              run: echo "pnpm_cache_dir=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-      - name: "Setup Rust"
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+            - name: "Setup pnpm cache"
+              uses: actions/cache@v4
+              with:
+                  path: ${{ steps.pnpm_cache.outputs.pnpm_cache_dir }}
+                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: ${{ runner.os }}-pnpm-store-
 
-      - name: "Setup Rust cache"
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: "./src-tauri -> target"
+            - name: "Setup Rust"
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-      - name: "Install system dependencies (Ubuntu only)"
-        if: matrix.platform == 'ubuntu-latest'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+            - name: "Setup Rust cache"
+              uses: swatinem/rust-cache@v2
+              with:
+                  workspaces: "./src-tauri -> target"
 
-      - name: "Install frontend dependencies"
-        run: pnpm install
+            - name: "Install system dependencies (Ubuntu only)"
+              if: matrix.platform == 'ubuntu-latest'
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
-      - name: "Build application and upload assets"
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tagName: "v__VERSION__"
-          releaseName: "v__VERSION__"
-          releaseDraft: false
-          prerelease: false
-          args: ${{ matrix.args }}
+            - name: "Install frontend dependencies"
+              run: pnpm install
+
+            - name: "Build application and upload assets"
+              uses: tauri-apps/tauri-action@v0
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  tagName: "v__VERSION__"
+                  releaseName: "v__VERSION__"
+                  releaseDraft: false
+                  prerelease: false
+                  args: ${{ matrix.args }}
