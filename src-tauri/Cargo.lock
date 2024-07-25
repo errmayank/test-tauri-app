@@ -3292,7 +3292,7 @@ dependencies = [
 
 [[package]]
 name = "test-tauri-app"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "fix-path-env",
  "serde",
