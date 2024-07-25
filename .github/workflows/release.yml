@@ -66,6 +66,8 @@ jobs:
                   pnpm changeset-version
                   VERSION=$(jq -r '.version' package.json)
                   echo "latest=$VERSION" >> $GITHUB_OUTPUT
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: "Create a release pull request"
               id: changesets
