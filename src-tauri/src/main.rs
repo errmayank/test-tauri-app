@@ -1,13 +1,15 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod utils;
+
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
 fn main() {
-    let _ = fix_path_env::fix();
+    utils::set_path_variable().unwrap();
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())

@@ -1,6 +1,6 @@
 [package]
 name = "test-tauri-app"
-version = "0.0.1"
+version = "0.0.2"
 description = "A Tauri App"
 authors = ["you"]
 edition = "2021"
@@ -9,8 +9,9 @@ edition = "2021"
 tauri-build = { version = "2.0.0-beta.19", features = [] }
 
 [dependencies]
-fix-path-env = { git = "https://github.com/tauri-apps/fix-path-env-rs" }
 tauri = { version = "2.0.0-beta.24", features = [] }
 tauri-plugin-shell = { version = "2.0.0-beta.9" }
 serde = { version = "1.0.204", features = ["derive"] }
 serde_json = { version = "1.0.120" }
+thiserror = { version = "1.0.63" }
+strip-ansi-escapes = { version = "0.2.0" }

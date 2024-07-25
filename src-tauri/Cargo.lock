@@ -715,15 +715,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "fix-path-env"
-version = "0.0.0"
-source = "git+https://github.com/tauri-apps/fix-path-env-rs#8481725b7ebfc56cdb052d522517421242eac36b"
-dependencies = [
- "strip-ansi-escapes",
- "thiserror",
-]
-
-[[package]]
 name = "flate2"
 version = "1.0.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3292,14 +3283,15 @@ dependencies = [
 
 [[package]]
 name = "test-tauri-app"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
- "fix-path-env",
  "serde",
  "serde_json",
+ "strip-ansi-escapes",
  "tauri",
  "tauri-build",
  "tauri-plugin-shell",
+ "thiserror",
 ]
 
 [[package]]
