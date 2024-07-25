@@ -70,9 +70,9 @@ jobs:
             - name: "Get new version"
               id: new_version
               run: |
-                  pnpm changeset status --output=release.json
-                  NEW_VERSION=$(jq -r '.releases[0].newVersion' release.json)
-                  rm release.json
+                  pnpm changeset status --output=changeset-status.json
+                  NEW_VERSION=$(jq -r '.releases[0].newVersion' changeset-status.json)
+                  rm changeset-status.json
                   echo "value=$NEW_VERSION" >> $GITHUB_OUTPUT
 
             - name: "Create a release pull request"
