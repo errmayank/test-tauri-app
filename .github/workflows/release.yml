@@ -60,13 +60,20 @@ jobs:
             - name: "Install frontend dependencies"
               run: pnpm install
 
+            - name: "Version"
+              id: version
+              run: |
+                  pnpm changeset-version
+                  VERSION=$(jq -r '.version' package.json)
+                  echo "latest=$VERSION" >> $GITHUB_OUTPUT
+
             - name: "Create a release pull request"
               id: changesets
               uses: changesets/action@v1
               with:
-                  commit: "chore(release): version bump"
-                  title: "chore(release): version bump"
-                  version: pnpm changeset-version
+                  commit: "chore(release): v${{ steps.version.outputs.latest }}"
+                  title: "chore(release): v${{ steps.version.outputs.latest }}"
+                  version: false
                   publish: pnpm changeset-tag
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
