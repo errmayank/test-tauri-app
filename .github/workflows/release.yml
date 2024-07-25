@@ -16,6 +16,9 @@ jobs:
   version_or_publish:
     name: "Version or Publish"
     if: github.repository == 'errmayank/test-tauri-app'
+    permissions:
+      pull-requests: "write"
+      contents: "write"
     runs-on: ubuntu-latest
     outputs:
       IS_PUBLISHED: ${{ steps.changesets.outputs.published }}
@@ -68,7 +71,7 @@ jobs:
     needs: [version_or_publish]
     if: ${{ needs.version_or_publish.outputs.IS_PUBLISHED == 'true' }}
     permissions:
-      contents: write
+      contents: "write"
     strategy:
       fail-fast: false
       matrix:
