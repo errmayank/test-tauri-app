@@ -64,7 +64,7 @@ jobs:
               id: new_version
               run: |
                   pnpm changeset status --output=release.json
-                  NEW_VERSION=$(jq -r '.releases[0].newVersion' release.json)"
+                  NEW_VERSION=$(jq -r '.releases[0].newVersion' release.json)
                   rm release.json
                   echo "value=$NEW_VERSION" >> $GITHUB_OUTPUT
 
