@@ -6,8 +6,8 @@ on:
             - main
     workflow_dispatch:
         inputs:
-            force_upload_assets:
-                description: "Force upload assets"
+            force_upload_or_reupload_assets:
+                description: "Force upload/re-upload assets."
                 type: boolean
                 default: false
                 required: false
@@ -21,7 +21,7 @@ env:
 
 jobs:
     version_or_publish:
-        name: "Version or Publish"
+        name: "Version/Publish"
         if: github.repository == 'errmayank/test-tauri-app'
         permissions:
             contents: "write"
@@ -89,7 +89,7 @@ jobs:
     upload_assets:
         name: "Upload assets"
         needs: [version_or_publish]
-        if: ${{ github.repository == 'errmayank/test-tauri-app' && (needs.version_or_publish.outputs.is_published == 'true' || github.event.inputs.force_upload_assets == 'true') }}
+        if: ${{ github.repository == 'errmayank/test-tauri-app' && (needs.version_or_publish.outputs.is_published == 'true' || github.event.inputs.force_upload_or_reupload_assets == 'true') }}
         permissions:
             contents: "write"
         strategy:
