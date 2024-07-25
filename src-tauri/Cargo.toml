@@ -1,8 +1,11 @@
 [package]
 name = "test-tauri-app"
 version = "0.0.2"
-description = "A Tauri App"
-authors = ["you"]
+description = ""
+license = "MIT"
+authors = ["Mayank Verma <errmayank@gmail.com>"]
+repository = ""
+homepage = ""
 edition = "2021"
 
 [build-dependencies]

@@ -2,6 +2,10 @@
     "name": "test-tauri-app",
     "version": "0.0.2",
     "description": "",
+    "license": "MIT",
+    "author": "Mayank Verma <errmayank@gmail.com>",
+    "repository": "",
+    "homepage": "",
     "type": "module",
     "scripts": {
         "dev": "vite dev",
@@ -20,7 +24,6 @@
         "changeset-tag": "changeset tag",
         "tauri": "tauri"
     },
-    "license": "MIT",
     "dependencies": {
         "@tauri-apps/api": ">=2.0.0-beta.0",
         "@tauri-apps/plugin-shell": ">=2.0.0-beta.0"
