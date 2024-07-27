@@ -1,5 +1,13 @@
 # test-tauri-app
 
+## 0.0.10
+
+### Patch Changes
+
+-   test2 - [`a9a6291`](https://github.com/errmayank/test-tauri-app/commit/a9a6291c09f4c03aee128965fe5cc8b027831036)
+
+-   testetsetset - [`444d14d`](https://github.com/errmayank/test-tauri-app/commit/444d14d6c7d60471624441d556950266a2f2fd15) [#13](https://github.com/errmayank/test-tauri-app/pull/13)
+
 ## 0.0.9
 
 ### Patch Changes
