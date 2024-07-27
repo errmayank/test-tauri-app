@@ -1,0 +1,22 @@
+name: test-tauri-app
+base: core18
+version: 0.1.0
+summary: Test
+description: |
+    Test test test
+grade: stable
+confinement: strict
+architectures:
+    - amd64
+
+parts:
+    test-tauri-app-amd64:
+        plugin: dump
+        source: https://github.com/errmayank/test-tauri-app/releases/download/v$SNAPCRAFT_PROJECT_VERSION/Test.Tauri.App_$SNAPCRAFT_PROJECT_VERSION_amd64.deb
+        source-type: deb
+        organize:
+            usr/bin/test-tauri-app: usr/bin/test-tauri-app-amd64
+
+apps:
+    test-tauri-app-amd64:
+        command: test-tauri-app-amd64
