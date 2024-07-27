@@ -85,8 +85,8 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    upload_assets:
-        name: "Upload assets"
+    build_and_upload_assets:
+        name: "Build and upload assets"
         needs: [version_or_publish]
         if: ${{ github.repository == 'errmayank/test-tauri-app' && (needs.version_or_publish.outputs.is_published == 'true' || github.event.inputs.force_upload_or_reupload_assets == 'true') }}
         permissions:
