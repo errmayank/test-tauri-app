@@ -1,5 +1,5 @@
 {
-    "productName": "test-tauri-app",
+    "productName": "Test Tauri App",
     "identifier": "com.test-tauri-app",
     "build": {
         "beforeDevCommand": "pnpm dev",
