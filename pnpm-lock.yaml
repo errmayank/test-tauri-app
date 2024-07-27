@@ -33,6 +33,9 @@ importers:
       '@tauri-apps/cli':
         specifier: '>=2.0.0-beta.0'
         version: 2.0.0-beta.22
+      changesets-changelog-compact:
+        specifier: ^0.1.3
+        version: 0.1.3
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
@@ -559,6 +562,9 @@ packages:
   chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
     engines: {node: '>=4'}
+
+  changesets-changelog-compact@0.1.3:
+    resolution: {integrity: sha512-Am7QGkV4H9TkAXImjgjvBPE6ObSkSoyCAUhSNUofx4TQCr9OL0H3OAeYIVDeFi1b2dc+KVKVuglaVhJuemymIg==}
 
   chardet@0.7.0:
     resolution: {integrity: sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==}
@@ -1711,6 +1717,12 @@ snapshots:
       ansi-styles: 3.2.1
       escape-string-regexp: 1.0.5
       supports-color: 5.5.0
+
+  changesets-changelog-compact@0.1.3:
+    dependencies:
+      '@changesets/get-github-info': 0.6.0
+    transitivePeerDependencies:
+      - encoding
 
   chardet@0.7.0: {}
 
