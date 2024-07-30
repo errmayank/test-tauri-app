@@ -66,20 +66,30 @@ jobs:
             - name: "Install frontend dependencies"
               run: pnpm install
 
-            - name: "Get new version"
-              id: new_version
+            - name: "Version status"
+              id: version_status
               run: |
                   pnpm changeset status --output=changeset-status.json
+                  OLD_VERSION=$(jq --raw-output '.releases[0].oldVersion' changeset-status.json)
                   NEW_VERSION=$(jq --raw-output '.releases[0].newVersion' changeset-status.json)
                   rm changeset-status.json
-                  echo "value=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+                  if [ "$OLD_VERSION" = "$NEW_VERSION" ]; then
+                      HAS_NEW_VERSION=false
+                  else
+                      HAS_NEW_VERSION=true
+                  fi
+
+                  echo "has_new_version=$HAS_NEW_VERSION" >> $GITHUB_OUTPUT
+                  echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
             - name: "Create a release pull request"
+              if: steps.version_status.outputs.has_new_version == 'true'
               id: changesets
               uses: changesets/action@v1
               with:
-                  commit: "chore(release): v${{ steps.new_version.outputs.value }}"
-                  title: "chore(release): v${{ steps.new_version.outputs.value }}"
+                  commit: "chore(release): v${{ steps.version_status.outputs.new_version }}"
+                  title: "chore(release): v${{ steps.version_status.outputs.new_version }}"
                   version: pnpm changeset-version
                   publish: pnpm changeset-tag
               env:
