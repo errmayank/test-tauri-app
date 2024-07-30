@@ -1,5 +1,17 @@
 # test-tauri-app
 
+## 0.0.11
+
+### Patch Changes
+
+-   tests snsap - [`141cee5`](https://github.com/errmayank/test-tauri-app/commit/141cee53741c2546a4231c63606a90ec36363b8c)
+
+-   4th change - [`aaf739f`](https://github.com/errmayank/test-tauri-app/commit/aaf739f38aaad3c369af489bc9d436764e6e8ab8)
+
+-   another 2 - [`ce0a216`](https://github.com/errmayank/test-tauri-app/commit/ce0a2169f77b345ff77643aa34f121a9bd6b07d2)
+
+-   another test - [`2b7d2e3`](https://github.com/errmayank/test-tauri-app/commit/2b7d2e3e93178dfeb294095e3294b31269f094b0)
+
 ## 0.0.10
 
 ### Patch Changes
